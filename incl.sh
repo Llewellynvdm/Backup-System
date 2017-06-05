@@ -31,8 +31,22 @@ function zipDB {
 	cd "$tmpFolder"
 	# db server ip address
 	DBSERVER="$1"
+	# check if date use is set
+	if [ -z ${USEDATE+x} ]; then 
+		USEDATE=0 
+	fi
 	# set the file name
-	FILE=`date +"%Y%m"`"_$2.sql"
+	if [ "$USEDATE" -eq "4" ]; then
+		FILE=`date +"%Y-%m-%d:%H:%M:%S"`"_$2.sql"
+	elif [ "$USEDATE" -eq "3" ]; then
+		FILE=`date +"%Y-%m-%d"`"_$2.sql"
+	elif [ "$USEDATE" -eq "2" ]; then
+		FILE=`date +"%Y-%m"`"_$2.sql"
+	elif [ "$USEDATE" -eq "1" ]; then
+		FILE=`date +"%Y"`"_$2.sql"
+	else
+		FILE="$2.sql"
+	fi
 	#database to backup
 	DATABASE="$3"
 	# user that has access to do this

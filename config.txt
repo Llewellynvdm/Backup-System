@@ -12,3 +12,6 @@ REMOTESSH="user@yourserver.com"
 REMOTEDBPATH="your_db_path/"
 REMOTEWEBPATH="your_website_pat/"
 
+## 0 = no date | 1 = year | 2 = year-month | 3 = your-month-day | 4 = your-month-day:time # For DB file name
+USEDATE=0
+

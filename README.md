@@ -13,13 +13,19 @@ The Bash scripts used to backup database and folders on a server
 
 ## Getting started
 
+Clone Repository
+
+```bash
+   $ git clone ssh://git@projects.vdm.io/system-backup.git system-backup
+```
+
 Rename __config.txt__ to __config.sh__ and update the values in the file.
 
 ```bash
    $ mv config.txt config.sh
 ```
 
-Rename __folders.txt__ to __folders__ and update the values in the file.              	
+Rename __folders.txt__ to __folders__ and update the values in the file.
 
 ```bash
    $ mv folders.txt folders
