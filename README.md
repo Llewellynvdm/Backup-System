@@ -59,6 +59,7 @@ Get the full path to the __run.sh__ file. Open https://crontab.guru to get your 
 ```
 With your cron time, add the following line to the crontab, using your path details:
 > 5 03 * * * /path/to/run.sh >/dev/null 2>&1
+
 > your time |  your path    | to ignore messages
    
 ## GIT, BASH
