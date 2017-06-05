@@ -14,25 +14,34 @@ The Bash scripts used to backup database and folders on a server
 ## Getting started
 
 Rename __config.txt__ to __config.sh__ and update the values in the file.
+
 ```bash
    $ mv config.txt config.sh
 ```
+
 Rename __folders.txt__ to __folders__ and update the values in the file.              	
+
 ```bash
    $ mv folders.txt folders
 ```
+
 Rename __databases.txt__ to __databases__ and update the values in the file.
+
 ```bash
    $ mv databases.txt databases
 ```
+
 Make sure all the needed files are executable
+
 ```bash
    $ chmod +x run.sh
    $ chmod +x main.sh
    $ chmod +x incl.sh
    $ chmod +x config.sh
 ```
+
 Run the script
+
 ```bash
    $ ./run.sh
 ```
