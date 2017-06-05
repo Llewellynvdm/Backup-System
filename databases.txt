@@ -1,0 +1,3 @@
+# Add your details of the databases to backedup here one per/line, values seperated by tabs
+# DBSERVER	FILENAME	DATABASE	USER	PASS
+127.0.0.1	database_name	database_name	database_user	password	<-- change these details

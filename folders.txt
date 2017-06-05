@@ -1,0 +1,3 @@
+# Add your details of the folder to be backedup here one per/line, values seperated by tabs
+# local_site_path	remote_site_folder_name
+/home/username/	username	<-- change these to your own values
