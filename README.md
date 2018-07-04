@@ -16,7 +16,7 @@ The Bash scripts used to backup database and folders on a server
 Clone Repository
 
 ```bash
-   $ git clone ssh://git@projects.vdm.io/system-backup.git system-backup
+   $ git clone ssh://git@github.com:vdm-io/Backup-System.git system-backup
 ```
 
 Rename __config.txt__ to __config.sh__ and update the values in the file.

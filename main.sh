@@ -22,7 +22,7 @@
 ### MAIN ###
 function main () {
 	# backup the databases now
-	backupDB
+	backupDB &
 	# backup the websites now
 	backupWEB
 }
@@ -36,12 +36,13 @@ function backupDB () {
 		DBFILE=$(zipDB "${database[0]}" "${database[1]}" "${database[2]}" "${database[3]}" "${database[4]}")
 		# move to backup server
 		moveDB "$DBFILE"
-		# now remove the local file
-		rmTmpFolder "$tmpFolder"
 	done < $databaseBuilder
 	
+	# now remove the local file
+	rmTmpFolder "$tmpFolder"
+
 	# start fresh
-	cd "$DIR"
+	cd "$USERHOME"
 	# GO To remote server and do house cleaning
 	ssh -tt -p '22' "$REMOTESSH" "$(typeset -f); remoteHouseCleaning $REMOTEDBPATH"
 }
@@ -57,7 +58,7 @@ function backupWEB () {
 	done < $folderBuilder
 	
 	# start fresh
-	cd "$DIR"
+	cd "$USERHOME"
 	# GO To remote server and do house cleaning
 	ssh -tt -p '22' "$REMOTESSH" "$(typeset -f); remoteHouseCleaning $REMOTEWEBPATH"
 }

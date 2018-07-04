@@ -19,6 +19,8 @@
 #
 #/-----------------------------------------------------------------------------------------------------------------------------/
 
+# user home dir
+USERHOME=~/
 # get script path
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" || "$DIR" == '.' ]]; then DIR="$PWD"; fi
@@ -29,14 +31,15 @@ if [[ ! -d "$DIR" || "$DIR" == '.' ]]; then DIR="$PWD"; fi
 # load functions
 . "$DIR/incl.sh"
 
-# we move out of the script folder
+# got to script folder
 cd "$DIR"
-cd ../
+# set Base Dir
+BASEDIR="$PWD"
 
 # get random folder name to avoid conflict
 newFolder=$(getRandom)
 # set this repo location
-tmpFolder="$PWD/T3MPR3P0_$newFolder"
+tmpFolder="$USERHOME/T3MPR3P0_$newFolder"
 # create tmp folder
 if [ ! -d "$tmpFolder" ] 
 then
@@ -45,23 +48,26 @@ fi
 
 # DB file
 databasesFileName="databases"
-databaseBuilder="$DIR/$databasesFileName"
+databaseBuilder="$BASEDIR/$databasesFileName"
 # check if file exist
 if [ ! -f "$databaseBuilder" ] 
 then
-    echo 'No databases.txt found'
+    echo 'No databases filefound'
     exit 1
 fi
 
 # folder names
 foldersFileName="folders"
-folderBuilder="$DIR/$foldersFileName"
+folderBuilder="$BASEDIR/$foldersFileName"
 # check if file exist
 if [ ! -f "$folderBuilder" ] 
 then
-    echo 'No folders.txt found'
+    echo 'No folders folder found'
     exit 1
 fi
 
+# we move to user folder
+cd "$USERHOME"
+
 # run main
-. "$DIR/main.sh"
+. "$BASEDIR/main.sh"
