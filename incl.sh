@@ -75,6 +75,8 @@ function moveDB () {
 }
 
 function moveWEB () {
+	# we move to tmp folder
+	cd "$tmpFolder"
 	# local folder path
 	localFolder="$1"
 	# remote folder name
@@ -94,9 +96,9 @@ function moveWEB () {
 			FILE="$2.zip"
 		fi
 		# zip the website
-		zip -r -q "${localFolder}${FILE}" "${localFolder}"
+		zip -r -q "${FILE}" "${localFolder}"
 		# set the paths
-		PaTh="${localFolder}${FILE}"
+		PaTh="${FILE}"
 		remotePaTh="${REMOTEWEBPATH}${FILE}"
 	else
 		# set the paths

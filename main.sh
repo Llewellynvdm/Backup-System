@@ -25,6 +25,8 @@ function main () {
 	backupDB &
 	# backup the websites now
 	backupWEB
+	# now remove the local file
+	rmTmpFolder "$tmpFolder"
 }
 
 # function to backup all DB's
@@ -37,9 +39,6 @@ function backupDB () {
 		# move to backup server
 		moveDB "$DBFILE"
 	done < $databaseBuilder
-	
-	# now remove the local file
-	rmTmpFolder "$tmpFolder"
 
 	# start fresh
 	cd "$USERHOME"
