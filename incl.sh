@@ -10,7 +10,7 @@
 #                                                        |_|
 #/-------------------------------------------------------------------------------------------------------------------------------/
 #
-#	@version			1.0.0
+#	@version		2.0.0
 #	@build			9th May, 2017
 #	@package		Backup System
 #	@author			Llewellyn van der Merwe <https://github.com/Llewellynvdm>

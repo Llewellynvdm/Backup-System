@@ -10,7 +10,7 @@
 #                                                        |_|
 #/-------------------------------------------------------------------------------------------------------------------------------/
 #
-#	@version			1.0.0
+#	@version		2.0.0
 #	@build			9th May, 2017
 #	@package		Backup System
 #	@author			Llewellyn van der Merwe <https://github.com/Llewellynvdm>
@@ -24,6 +24,17 @@ USERHOME=~/
 # get script path
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" || "$DIR" == '.' ]]; then DIR="$PWD"; fi
+
+# load setup incase
+. "$DIR/setup.sh"
+
+# config file
+DIRconfig="$DIR/config.sh"
+# check if file exist
+if [ ! -f "$DIRconfig" ] 
+then
+    runSetup 1 "$DIRconfig"
+fi
 
 # load configuration file
 . "$DIR/config.sh"
@@ -41,10 +52,10 @@ newFolder=$(getRandom)
 # set this repo location
 tmpFolder="$USERHOME/T3MPR3P0_$newFolder"
 # create tmp folder
-if [ ! -d "$tmpFolder" ] 
-then
-	mkdir -p "$tmpFolder"
-fi
+#if [ ! -d "$tmpFolder" ] 
+#then
+#	mkdir -p "$tmpFolder"
+#fi
 
 # DB file
 databasesFileName="databases"
@@ -52,18 +63,16 @@ databaseBuilder="$BASEDIR/$databasesFileName"
 # check if file exist
 if [ ! -f "$databaseBuilder" ] 
 then
-    echo 'No databases filefound'
-    exit 1
+    runSetup 2 "$databaseBuilder"
 fi
 
 # folder names
 foldersFileName="folders"
 folderBuilder="$BASEDIR/$foldersFileName"
 # check if file exist
-if [ ! -f "$folderBuilder" ] 
+if [ ! -f "$folderBuilder" ]
 then
-    echo 'No folders folder found'
-    exit 1
+    runSetup 3 "$folderBuilder"
 fi
 
 # we move to user folder

@@ -6,6 +6,7 @@ The Bash scripts used to backup database and folders on a server
 
 * Cross platform
 * Fast and effective backups
+* Backup to Dropbox
 * Ability to track changes
 * Historical records
 * Preserve the folder structure
@@ -16,34 +17,42 @@ The Bash scripts used to backup database and folders on a server
 Clone Repository
 
 ```bash
-   $ git clone https://github.com/vdm-io/Backup-System.git system-backup
+   $ git clone https://github.com/vdm-io/Backup-System.git Backup-System
 ```
 
-Rename __config.txt__ to __config.sh__ and update the values in the file.
+Make sure all the run file is executable
 
 ```bash
-   $ mv config.txt config.sh
-```
-
-Rename __folders.txt__ to __folders__ and update the values in the file.
-
-```bash
-   $ mv folders.txt folders
-```
-
-Rename __databases.txt__ to __databases__ and update the values in the file.
-
-```bash
-   $ mv databases.txt databases
-```
-
-Make sure all the needed files are executable
-
-```bash
+   $ cd Backup-System/
    $ chmod +x run.sh
-   $ chmod +x main.sh
-   $ chmod +x incl.sh
-   $ chmod +x config.sh
+```
+
+## Automated Option (guided setup option)
+
+Just run :)
+
+```bash
+   $ ./run.sh
+```
+
+## Manual Option
+
+Copy __config.txt__ to __config.sh__ and update the values in the file.
+
+```bash
+   $ cp config.txt config.sh
+```
+
+Copy __folders.txt__ to __folders__ and update the values in the file.
+
+```bash
+   $ cp folders.txt folders
+```
+
+Copy __databases.txt__ to __databases__ and update the values in the file.
+
+```bash
+   $ cp databases.txt databases
 ```
 
 Run the script
