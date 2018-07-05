@@ -118,7 +118,7 @@ function remoteHouseCleaning () {
 }
 
 # remove a folder and all its content
-function rmTmpFolder () {
+function rmFolder () {
     local FOLDER="$1"
     # ensure repos is removed
     if [ -d "$FOLDER" ] 
