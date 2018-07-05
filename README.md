@@ -72,8 +72,8 @@ With your cron time, add the following line to the crontab, using your path deta
 
 **Debian & Ubuntu Linux:**
 ```bash
-    sudo apt-get install bash (Probably BASH is already installed on your system)
-    sudo apt-get install git
+    $ sudo apt-get install bash (Probably BASH is already installed on your system)
+    $ sudo apt-get install git
 ```
 
 # Copyright:

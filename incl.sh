@@ -54,7 +54,7 @@ function zipDB {
 	# the user password
 	PASS="$5"
 	# use this command for a database server on localhost. add other options if need be.
-	mysqldump --opt --user=${USER} --password=${PASS} ${DATABASE} > ${FILE}
+	mysqldump --opt -q --user=${USER} --password=${PASS} ${DATABASE} > ${FILE}
 	# gzip the mysql database dump file
 	gzip $FILE
 	# return file name
@@ -67,7 +67,11 @@ function moveDB () {
 	# file name
 	FILE="$1"
 	# move file
-	scp "$FILE" "$REMOTESSH:${REMOTEDBPATH}${FILE}"
+	if [ "$BACKUPTYPE" -eq "2" ]; then
+		$DROPBOX -q upload "$FILE" "${REMOTEDBPATH}${FILE}"
+	else
+		scp "$FILE" "$REMOTESSH:${REMOTEDBPATH}${FILE}"
+	fi
 }
 
 function moveWEB () {
@@ -75,8 +79,36 @@ function moveWEB () {
 	localFolder="$1"
 	# remote folder name
 	remoteFolder="$2"
+	# check if we should instead zip
+	if [ "$WEBBACKUPTYPE" -eq "2" ]; then
+		# set the file name
+		if [ "$USEDATE" -eq "4" ]; then
+			FILE=`date +"%Y-%m-%d:%H:%M:%S"`"_$2.zip"
+		elif [ "$USEDATE" -eq "3" ]; then
+			FILE=`date +"%Y-%m-%d"`"_$2.zip"
+		elif [ "$USEDATE" -eq "2" ]; then
+			FILE=`date +"%Y-%m"`"_$2.zip"
+		elif [ "$USEDATE" -eq "1" ]; then
+			FILE=`date +"%Y"`"_$2.zip"
+		else
+			FILE="$2.zip"
+		fi
+		# zip the website
+		zip -r -q "${localFolder}${FILE}" "${localFolder}"
+		# set the paths
+		PaTh="${localFolder}${FILE}"
+		remotePaTh="${REMOTEWEBPATH}${FILE}"
+	else
+		# set the paths
+		PaTh="${localFolder}"
+		remotePaTh="${REMOTEWEBPATH}${remoteFolder}"
+	fi
 	# move all file & folders
-	rsync -ax "${localFolder}" "$REMOTESSH:${REMOTEWEBPATH}${remoteFolder}"
+	if [ "$BACKUPTYPE" -eq "2" ]; then
+		$DROPBOX -q upload "${PaTh}" "${remotePaTh}"
+	else
+		rsync -ax "${PaTh}" "$REMOTESSH:${remotePaTh}"
+	fi
 }
 
 function remoteHouseCleaning () {

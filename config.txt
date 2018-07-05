@@ -8,10 +8,21 @@
 ####       just update these to point to your server       ###
 ##############################################################
 
+## BACKUP TYPE (1 = REMOTE SERVER || 2 = DROPBOX)
+BACKUPTYPE=1
+
+## REMOTE SERVER DETAILS (1)
 REMOTESSH="user@yourserver.com"
+
+## DROPBOX DETAILS (2) (get it from https://github.com/andreafabrizi/Dropbox-Uploader)
+DROPBOX="/home/path/to/Dropbox-Uploader/dropbox_uploader.sh"
+
+# PATH DETAILS
 REMOTEDBPATH="your_db_path/"
-REMOTEWEBPATH="your_website_pat/"
+REMOTEWEBPATH="your_website_path/"
+
+## WEBSITE BACKUP TYPE (1 = PER/FILE || 2 = ZIPPED)
+WEBBACKUPTYPE=1
 
 ## 0 = no date | 1 = year | 2 = year-month | 3 = your-month-day | 4 = your-month-day:time # For DB file name
 USEDATE=0
-
