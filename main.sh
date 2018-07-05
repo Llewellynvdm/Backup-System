@@ -19,14 +19,16 @@
 #
 #/-----------------------------------------------------------------------------------------------------------------------------/
 
+#confirm we are done
+BACKUPDBDONE=0
+BACKUPWEBDONE=0
+
 ### MAIN ###
 function main () {
 	# backup the databases now
 	backupDB &
 	# backup the websites now
 	backupWEB
-	# now remove the local file
-	rmTmpFolder "$tmpFolder"
 }
 
 # function to backup all DB's
@@ -46,6 +48,10 @@ function backupDB () {
 	if [ "$BACKUPTYPE" -eq "1" ]; then
 		ssh -tt -p '22' "$REMOTESSH" "$(typeset -f); remoteHouseCleaning $REMOTEDBPATH"
 	fi
+	#confirm we are done
+	BACKUPDBDONE=1
+	# try to remove tmp
+	rmTmp
 }
 
 # function to backup all WEB folders
@@ -64,6 +70,17 @@ function backupWEB () {
 	# GO To remote server and do house cleaning
 	if [ "$BACKUPTYPE" -eq "1" ]; then
 		ssh -tt -p '22' "$REMOTESSH" "$(typeset -f); remoteHouseCleaning $REMOTEWEBPATH"
+	fi
+	#confirm we are done
+	BACKUPWEBDONE=1
+	# try to remove tmp
+	rmTmp
+}
+
+function rmTmp () {
+	if [ "$BACKUPWEBDONE" -eq "1" ] && [ "$BACKUPDBDONE" -eq "1" ]; then
+		# now remove the local file
+		rmTmpFolder "$tmpFolder"
 	fi
 }
 
