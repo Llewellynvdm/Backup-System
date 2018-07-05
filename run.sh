@@ -50,12 +50,12 @@ BASEDIR="$PWD"
 # get random folder name to avoid conflict
 newFolder=$(getRandom)
 # set this repo location
-tmpFolder="$USERHOME/T3MPR3P0_$newFolder"
+tmpFolder="${USERHOME}T3MPR3P0_${newFolder}"
 # create tmp folder
-#if [ ! -d "$tmpFolder" ] 
-#then
-#	mkdir -p "$tmpFolder"
-#fi
+if [ ! -d "$tmpFolder" ] 
+then
+	mkdir -p "$tmpFolder"
+fi
 
 # DB file
 databasesFileName="databases"

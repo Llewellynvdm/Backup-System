@@ -20,7 +20,7 @@ Clone Repository
    $ git clone https://github.com/vdm-io/Backup-System.git Backup-System
 ```
 
-Make sure all the run file is executable
+Make sure the run file is executable
 
 ```bash
    $ cd Backup-System/
