@@ -1,5 +1,5 @@
 # Backup System for server:
----------------------
+
 The Bash scripts used to backup database and folders on a server
 
 ## Features
@@ -85,8 +85,16 @@ With your cron time, add the following line to the crontab, using your path deta
     $ sudo apt-get install git
 ```
 
+**To use the Dropbox back-up option You also need the [Dropbox-Uploader](https://github.com/andreafabrizi/Dropbox-Uploader):**
+```bash
+    $ git clone https://github.com/andreafabrizi/Dropbox-Uploader.git Dropbox-Uploader
+    $ cd Dropbox-Uploader/
+    $ chmod +x dropbox_uploader.sh
+    $ ./dropbox_uploader.sh
+```
+
 # Copyright:
----------------------
+
 * Copyright (C) [Vast Development Method](https://www.vdm.io). All rights reserved. 
 * Distributed under the GNU General Public License version 2 or later
 * See [License details](https://www.vdm.io/gnu-gpl)
