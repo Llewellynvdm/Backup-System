@@ -69,9 +69,15 @@ function moveDB () {
 	# move file
 	if [ "$BACKUPTYPE" -eq "2" ]; then
 		$DROPBOX -q upload "$FILE" "${REMOTEDBPATH}${FILE}"
+		# to check the result
+		MOVEDBRESULT=$?
 	else
 		scp "$FILE" "$REMOTESSH:${REMOTEDBPATH}${FILE}"
+		# to check the result
+		MOVEDBRESULT=$?
 	fi
+	# for global messages
+	MOVEDBWHAT="$FILE"
 }
 
 function moveWEB () {
@@ -108,8 +114,32 @@ function moveWEB () {
 	# move all file & folders
 	if [ "$BACKUPTYPE" -eq "2" ]; then
 		$DROPBOX -q upload "${PaTh}" "${remotePaTh}"
+		# to check the result
+		MOVEWEBRESULT=$?
 	else
 		rsync -ax "${PaTh}" "$REMOTESSH:${remotePaTh}"
+		# to check the result
+		MOVEWEBRESULT=$?
+	fi
+	# for global messages
+	MOVEWEBWHAT="${PaTh}"
+}
+
+# do some error handling for the moving
+function checkMove () {
+	# check the area
+	if [ "$1" -eq "1" ]; then
+		if [ $MOVEDBRESULT -ne 0 ]; then
+			echo "Database ${MOVEDBWHAT} could not be moved!"
+		else
+			echo "Database ${MOVEDBWHAT} where moved!"
+		fi
+	else
+		if [ $MOVEWEBRESULT -ne 0 ]; then
+			echo "Website ${MOVEWEBWHAT} could not be not be moved!"
+		else
+			echo "Website ${MOVEWEBWHAT} where moved!"
+		fi
 	fi
 }
 
@@ -120,7 +150,7 @@ function remoteHouseCleaning () {
 # remove a folder and all its content
 function rmFolder () {
     local FOLDER="$1"
-    # ensure repos is removed
+    # ensure folder is removed
     if [ -d "$FOLDER" ] 
     then
         rm -fR "$FOLDER"

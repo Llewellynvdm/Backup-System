@@ -23,6 +23,14 @@
 BACKUPDBDONE=0
 BACKUPWEBDONE=0
 
+# some error handle
+MOVEDBRESULT=0
+MOVEWEBRESULT=0
+
+# for global messages
+MOVEDBWHAT='None'
+MOVEWEBWHAT='None'
+
 ### MAIN ###
 function main () {
 	# backup the databases now
@@ -56,6 +64,8 @@ function backupDB () {
 		DBFILE=$(zipDB "${database[0]}" "${database[1]}" "${database[2]}" "${database[3]}" "${database[4]}")
 		# move to backup server
 		moveDB "$DBFILE"
+		# check if move was success
+		checkMove 1
 	done < $databaseBuilder
 
 	# start fresh
@@ -76,7 +86,8 @@ function backupWEB () {
 		[[ "$foalder" =~ ^#.*$ ]] && continue
 		# move the local folder & files to remote
 		moveWEB "${foalder[0]}" "${foalder[1]}"
-
+		# check if move was success
+		checkMove 2
 	done < $folderBuilder
 
 	# start fresh
@@ -94,3 +105,6 @@ main
 
 # try again
 rmTmp 3
+
+# We are done
+exit 0
