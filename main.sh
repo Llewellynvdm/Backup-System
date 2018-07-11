@@ -121,6 +121,8 @@ function revertDB () {
 		# the local database details
 		# echo "${database[0]}" "${database[1]}" "${database[2]}" "${database[3]}" "${database[4]}"
 	done < $databaseBuilder
+
+	echo "Soon we will add this feature in its full.";
 }
 
 # function to revert WEB folders
@@ -131,6 +133,8 @@ function revertWEB () {
 		# the local folder & remote file name
 		# echo "${foalder[0]}" "${foalder[1]}"
 	done < $folderBuilder
+
+	echo "Soon we will add this feature in its full.";
 }
 
 # run the main only at the end!
