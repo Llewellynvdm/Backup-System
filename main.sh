@@ -33,10 +33,20 @@ MOVEWEBWHAT='None'
 
 ### MAIN ###
 function main () {
-	# backup the databases now
-	backupDB
-	# backup the websites now
-	backupWEB
+	# do backup
+	if [ "$REVERT" -ne 1 ]; then
+		# backup the databases now
+		backupDB
+		# backup the websites now
+		backupWEB
+	else
+		# revert the databases now
+		revertDB
+		# revert the websites now
+		revertWEB
+		# force remove tmp
+		rmTmp 4
+	fi
 }
 
 function rmTmp () {
@@ -47,10 +57,13 @@ function rmTmp () {
 	elif [ "$1" -eq "2" ]; then
 		#confirm we are done
 		BACKUPWEBDONE=1
+	elif [ "$1" -eq "4" ]; then
+		# now force remove tmp
+		rmFolder "$tmpFolder"
 	fi
 	# only if both are done
 	if [ "$BACKUPWEBDONE" -eq "1" ] && [ "$BACKUPDBDONE" -eq "1" ]; then
-		# now remove the local file
+		# now remove tmp
 		rmFolder "$tmpFolder"
 	fi
 }
@@ -98,6 +111,26 @@ function backupWEB () {
 	fi
 	# try to remove tmp
 	rmTmp 2
+}
+
+# function to revert DB's
+function revertDB () {
+	while IFS=$'\t' read -r -a database
+	do
+		[[ "$database" =~ ^#.*$ ]] && continue
+		# the local database details
+		# echo "${database[0]}" "${database[1]}" "${database[2]}" "${database[3]}" "${database[4]}"
+	done < $databaseBuilder
+}
+
+# function to revert WEB folders
+function revertWEB () {
+	while IFS=$'\t' read -r -a foalder
+	do
+		[[ "$foalder" =~ ^#.*$ ]] && continue
+		# the local folder & remote file name
+		# echo "${foalder[0]}" "${foalder[1]}"
+	done < $folderBuilder
 }
 
 # run the main only at the end!

@@ -101,8 +101,12 @@ function moveWEB () {
 		else
 			FILE="$2.zip"
 		fi
+		# go to local folder
+		cd "${localFolder}"
 		# zip the website
-		zip -r -q "${FILE}" "${localFolder}"
+		zip -r -q "${tmpFolder}/${FILE}" *
+		# we move to tmp folder
+		cd "$tmpFolder"
 		# set the paths
 		PaTh="${FILE}"
 		remotePaTh="${REMOTEWEBPATH}${FILE}"

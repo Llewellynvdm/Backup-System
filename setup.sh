@@ -23,17 +23,35 @@
 function runSetupConfig () {
 	# get backup type
 	echo -ne "\n  Select Backup Type\n"
-	echo -ne " 1 = Remote Server\n"
+	echo -ne " 1 = Remote Server (default)\n"
 	echo -ne " 2 = Dropbox\n"
 	echo -ne " # Make your selection [1/2]: "
 	read -r INPUT_BACKUPTYPE
+	# set default
+	INPUT_BACKUPTYPE=${INPUT_BACKUPTYPE:-1}
 	# get the details for the backup type
 	if [ "$INPUT_BACKUPTYPE" -eq "2" ]; then
-		# get dropbox uploader path
-		echo -ne "\n  Set the Path to the Dropbox Uploader File\n"
-		echo -ne " Use https://github.com/andreafabrizi/Dropbox-Uploader\n"
-		echo -ne " # Example (/home/path/to/Dropbox-Uploader/dropbox_uploader.sh): "
-		read -r INPUT_DROPBOX
+		# check if another should be added
+		echo -ne "\n  Do you have the path to the Dropbox Uploader File? [y/N]: "
+		read -r answer
+		if [[ $answer != "y" ]]; then
+			echo -ne "\n YOU MUST GET THE PATH TO THE DROPBOX UPLOADER FILE!\n" ;
+			echo -ne " For more help https://github.com/andreafabrizi/Dropbox-Uploader\n"
+			# start again
+			exit 1
+		else
+			# get dropbox uploader path
+			echo -ne "\n  Set the Path to the Dropbox Uploader File\n"
+			echo -ne " # Example (/home/path/to/Dropbox-Uploader/dropbox_uploader.sh): "
+			read -r INPUT_DROPBOX
+			# check that we have a string
+			if [ ! ${#INPUT_DROPBOX} -ge 2 ]; then
+				echo -ne "\n YOU MUST GET THE PATH TO THE DROPBOX UPLOADER FILE!\n" ;
+				echo -ne " For more help https://github.com/andreafabrizi/Dropbox-Uploader\n"
+				# start again
+				exit 1
+			fi
+		fi
 		# set default remote server details
 		INPUT_REMOTESSH="user@yourserver.com"
 	else
@@ -41,32 +59,47 @@ function runSetupConfig () {
 		echo -ne "\n  Set the Remote Server Details\n"
 		echo -ne " # Example (user@yourserver.com): "
 		read -r INPUT_REMOTESSH
+		# check that we have a string
+		if [ ! ${#INPUT_REMOTESSH} -ge 2 ]; then
+			echo -ne "\n YOU MUST GIVE THE REMOTE SERVER DETAILS!\n" ;
+			echo -ne " # Example (user@yourserver.com)\n"
+			# start again
+			exit 1
+		fi
 		# set default dropbox details
-		INPUT_DROPBOX="/media/host/root/Dropbox-Uploader/dropbox_uploader.sh"
+		INPUT_DROPBOX="/home/path/to/Dropbox-Uploader/dropbox_uploader.sh"
 	fi
 	# get the remote database backup paths
 	echo -ne "\n  Set Remote Backup Path for Database Backups\n"
-	echo -ne " # Example (your_db_path/): "
+	echo -ne " # Default (db_path/): "
 	read -r INPUT_REMOTEDBPATH
+	# set default
+	INPUT_REMOTEDBPATH=${INPUT_REMOTEDBPATH:-'db_path/'}
 	# get the remote website backup paths
 	echo -ne "\n  Set Remote Backup Path for Website Backups\n"
-	echo -ne " # Example (your_website_path/): "
+	echo -ne " # Default (website_path/): "
 	read -r INPUT_REMOTEWEBPATH
+	# set default
+	INPUT_REMOTEWEBPATH=${INPUT_REMOTEWEBPATH:-'website_path/'}
 	# select the website backup type
 	echo -ne "\n  Select the Website Backup Type\n"
 	echo -ne " 1 = per/file\n"
-	echo -ne " 2 = zipped package\n"
+	echo -ne " 2 = zipped package (default)\n"
 	echo -ne " # Make your selection [1/2]: "
 	read -r INPUT_WEBBACKUPTYPE
+	# set default
+	INPUT_WEBBACKUPTYPE=${INPUT_WEBBACKUPTYPE:-2}
 	# select the backup file name convention
 	echo -ne "\n  Select the Backup File Name Convention\n"
 	echo -ne " 0 = add no date\n"
-	echo -ne " 1 = add only year\n"
+	echo -ne " 1 = add only year (default)\n"
 	echo -ne " 2 = add year & month\n"
 	echo -ne " 3 = add year, month & day\n"
 	echo -ne " 4 = add year, month, day & time\n"
 	echo -ne " # Make your selection [1-4]: "
 	read -r INPUT_USEDATE
+	# set default
+	INPUT_USEDATE=${INPUT_USEDATE:-1}
 
 	# now add it all to the config file
 	echo "#!/bin/bash" > "$1"

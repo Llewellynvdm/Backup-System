@@ -27,7 +27,7 @@ Make sure the run file is executable
    $ chmod +x run.sh
 ```
 
-## Automated Option (guided setup option)
+## Auto Setup Option
 
 Just run :)
 
@@ -35,7 +35,7 @@ Just run :)
    $ ./run.sh
 ```
 
-## Manual Option
+## Manual Setup Option
 
 Copy __config.txt__ to __config.sh__ and update the values in the file.
 
@@ -59,6 +59,14 @@ Run the script
 
 ```bash
    $ ./run.sh
+```
+
+## Fetch Backup and Restore
+
+Either revert to previous backup (restore) or to do a new deployment.
+
+```bash
+   $ ./run.sh -r
 ```
 
 ## Tested Environments

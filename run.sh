@@ -21,6 +21,8 @@
 
 # user home dir
 USERHOME=~/
+# switch to revert
+REVERT=0
 # get script path
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" || "$DIR" == '.' ]]; then DIR="$PWD"; fi
@@ -54,7 +56,7 @@ tmpFolder="${USERHOME}T3MPR3P0_${newFolder}"
 # create tmp folder
 if [ ! -d "$tmpFolder" ] 
 then
-	mkdir -p "$tmpFolder"
+    mkdir -p "$tmpFolder"
 fi
 
 # DB file
@@ -77,6 +79,17 @@ fi
 
 # we move to user folder
 cd "$USERHOME"
+
+#Look for optional config parameter
+while getopts ":r" opt; do
+    case $opt in
+
+    r)
+        REVERT=1
+    ;;
+
+    esac
+done
 
 # run main
 . "$BASEDIR/main.sh"
