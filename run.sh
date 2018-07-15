@@ -44,6 +44,24 @@ fi
 # load functions
 . "$DIR/incl.sh"
 
+# check if the BACKUPWEBSITES area switches is set
+if [ -z ${BACKUPWEBSITES+x} ]; then
+    echo "BACKUPWEBSITES=1" >> "$DIR/config.sh"
+    BACKUPWEBSITES=1
+fi
+
+# check if the BACKUPDATABASE area switches is set
+if [ -z ${BACKUPDATABASE+x} ]; then
+    echo "BACKUPDATABASE=1" >> "$DIR/config.sh"
+    BACKUPDATABASE=1
+fi
+
+ # need only continue if either one option is set
+if [ "$BACKUPWEBSITES" -eq "0" ] && [ "$BACKUPDATABASE" -eq "0" ]; then
+    # We have no work here
+    exit 0
+fi
+
 # got to script folder
 cd "$DIR"
 # set Base Dir
@@ -59,22 +77,28 @@ then
     mkdir -p "$tmpFolder"
 fi
 
-# DB file
-databasesFileName="databases"
-databaseBuilder="$BASEDIR/$databasesFileName"
-# check if file exist
-if [ ! -f "$databaseBuilder" ] 
-then
-    runSetup 2 "$databaseBuilder"
+# only add if db's are required
+if [ "$BACKUPDATABASE" -eq "1" ]; then
+    # DB file
+    databasesFileName="databases"
+    databaseBuilder="$BASEDIR/$databasesFileName"
+    # check if file exist
+    if [ ! -f "$databaseBuilder" ] 
+    then
+        runSetup 2 "$databaseBuilder"
+    fi
 fi
 
-# folder names
-foldersFileName="folders"
-folderBuilder="$BASEDIR/$foldersFileName"
-# check if file exist
-if [ ! -f "$folderBuilder" ]
-then
-    runSetup 3 "$folderBuilder"
+# only add if db's are required
+if [ "$BACKUPWEBSITES" -eq "1" ]; then
+    # folder names
+    foldersFileName="folders"
+    folderBuilder="$BASEDIR/$foldersFileName"
+    # check if file exist
+    if [ ! -f "$folderBuilder" ]
+    then
+        runSetup 3 "$folderBuilder"
+    fi
 fi
 
 # we move to user folder

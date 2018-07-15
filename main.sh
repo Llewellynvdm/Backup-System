@@ -19,9 +19,18 @@
 #
 #/-----------------------------------------------------------------------------------------------------------------------------/
 
-#confirm we are done
-BACKUPDBDONE=0
-BACKUPWEBDONE=0
+#confirm we are done with database backup
+if [ "$BACKUPDATABASE" -eq "1" ]; then
+    BACKUPDBDONE=0
+else
+    BACKUPDBDONE=1
+fi
+#confirm we are done with website backup
+ if [ "$BACKUPWEBSITES" -eq "1" ]; then
+    BACKUPWEBDONE=0
+else
+    BACKUPWEBDONE=1
+fi
 
 # some error handle
 MOVEDBRESULT=0
@@ -36,14 +45,22 @@ function main () {
 	# do backup
 	if [ "$REVERT" -ne 1 ]; then
 		# backup the databases now
-		backupDB
+        if [ "$BACKUPDATABASE" -eq "1" ]; then
+            backupDB
+        fi
 		# backup the websites now
-		backupWEB
+        if [ "$BACKUPWEBSITES" -eq "1" ]; then
+            backupWEB
+        fi
 	else
 		# revert the databases now
-		revertDB
+        if [ "$BACKUPDATABASE" -eq "1" ]; then
+            revertDB
+        fi
 		# revert the websites now
-		revertWEB
+        if [ "$BACKUPWEBSITES" -eq "1" ]; then
+            revertWEB
+        fi
 		# force remove tmp
 		rmTmp 4
 	fi

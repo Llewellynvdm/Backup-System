@@ -69,37 +69,71 @@ function runSetupConfig () {
 		# set default dropbox details
 		INPUT_DROPBOX="/home/path/to/Dropbox-Uploader/dropbox_uploader.sh"
 	fi
-	# get the remote database backup paths
-	echo -ne "\n  Set Remote Backup Path for Database Backups\n"
-	echo -ne " # Default (db_path/): "
-	read -r INPUT_REMOTEDBPATH
-	# set default
-	INPUT_REMOTEDBPATH=${INPUT_REMOTEDBPATH:-'db_path/'}
-	# get the remote website backup paths
-	echo -ne "\n  Set Remote Backup Path for Website Backups\n"
-	echo -ne " # Default (website_path/): "
-	read -r INPUT_REMOTEWEBPATH
-	# set default
-	INPUT_REMOTEWEBPATH=${INPUT_REMOTEWEBPATH:-'website_path/'}
-	# select the website backup type
-	echo -ne "\n  Select the Website Backup Type\n"
-	echo -ne " 1 = per/file\n"
-	echo -ne " 2 = zipped package (default)\n"
-	echo -ne " # Make your selection [1/2]: "
-	read -r INPUT_WEBBACKUPTYPE
-	# set default
-	INPUT_WEBBACKUPTYPE=${INPUT_WEBBACKUPTYPE:-2}
-	# select the backup file name convention
-	echo -ne "\n  Select the Backup File Name Convention\n"
-	echo -ne " 0 = add no date\n"
-	echo -ne " 1 = add only year (default)\n"
-	echo -ne " 2 = add year & month\n"
-	echo -ne " 3 = add year, month & day\n"
-	echo -ne " 4 = add year, month, day & time\n"
-	echo -ne " # Make your selection [1-4]: "
-	read -r INPUT_USEDATE
-	# set default
-	INPUT_USEDATE=${INPUT_USEDATE:-1}
+    # Check if there is database backups
+    INPUT_BACKUPDATABASE=1
+    echo ""
+    echo -ne "\n Would you like to Backup Database/s? [y/N]: "
+    read -r answer
+    if [[ $answer != "y" ]]; then
+        # set backup to null
+        INPUT_BACKUPDATABASE=0
+    fi
+    # only add if db backups are required
+    if [ "$INPUT_BACKUPDATABASE" -eq "1" ]; then
+        # get the remote database backup paths
+        echo -ne "\n  Set Remote Backup Path for Database Backups\n"
+        echo -ne " # Default (db_path/): "
+        read -r INPUT_REMOTEDBPATH
+        # set default
+        INPUT_REMOTEDBPATH=${INPUT_REMOTEDBPATH:-'db_path/'}
+    else
+        INPUT_REMOTEDBPATH='db_path/'
+    fi
+    # Check if there is website backups
+    INPUT_BACKUPWEBSITES=1
+    echo ""
+    echo -ne "\n Would you like to backup Files/Website? [y/N]: "
+    read -r answer
+    if [[ $answer != "y" ]]; then
+        # set backup to null
+        INPUT_BACKUPWEBSITES=0
+    fi
+    # only add if website backups are required
+    if [ "$INPUT_BACKUPWEBSITES" -eq "1" ]; then
+        # get the remote website backup paths
+        echo -ne "\n  Set Remote Backup Path for Files/Website Backups\n"
+        echo -ne " # Default (website_path/): "
+        read -r INPUT_REMOTEWEBPATH
+        # set default
+        INPUT_REMOTEWEBPATH=${INPUT_REMOTEWEBPATH:-'website_path/'}
+        # select the website backup type
+        echo -ne "\n  Select the Files/Website Backup Type\n"
+        echo -ne " 1 = per/file\n"
+        echo -ne " 2 = zipped package (default)\n"
+        echo -ne " # Make your selection [1/2]: "
+        read -r INPUT_WEBBACKUPTYPE
+    	# set default
+        INPUT_WEBBACKUPTYPE=${INPUT_WEBBACKUPTYPE:-2}
+    else
+        INPUT_REMOTEWEBPATH='website_path/'
+        INPUT_WEBBACKUPTYPE=2
+    fi
+    # need only ask this if either one option is set
+    if [ "$INPUT_BACKUPWEBSITES" -eq "1" ] || [ "$INPUT_BACKUPDATABASE" -eq "1" ]; then
+        # select the backup file name convention
+        echo -ne "\n  Select the Backup File Name Convention for zip Packages\n"
+        echo -ne " 0 = add no date\n"
+        echo -ne " 1 = add only year (default)\n"
+        echo -ne " 2 = add year & month\n"
+        echo -ne " 3 = add year, month & day\n"
+        echo -ne " 4 = add year, month, day & time\n"
+        echo -ne " # Make your selection [1-4]: "
+        read -r INPUT_USEDATE
+        # set default
+        INPUT_USEDATE=${INPUT_USEDATE:-1}
+    else
+        INPUT_USEDATE=1
+    fi
 
 	# now add it all to the config file
 	echo "#!/bin/bash" > "$1"
@@ -114,6 +148,10 @@ function runSetupConfig () {
 	echo "" >> "$1"
 	echo "## BACKUP TYPE (1 = REMOTE SERVER || 2 = DROPBOX)" >> "$1"
 	echo "BACKUPTYPE=${INPUT_BACKUPTYPE}" >> "$1"
+	echo "" >> "$1"
+	echo "## BACKUP AREAS" >> "$1"
+	echo "BACKUPWEBSITES=${INPUT_BACKUPWEBSITES}" >> "$1"
+	echo "BACKUPDATABASE=${INPUT_BACKUPDATABASE}" >> "$1"
 	echo "" >> "$1"
 	echo "## REMOTE SERVER DETAILS (1)" >> "$1"
 	echo "REMOTESSH=\"${INPUT_REMOTESSH}\"" >> "$1"
